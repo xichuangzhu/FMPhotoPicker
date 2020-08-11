@@ -47,6 +47,8 @@ public class FMPhotoPickerViewController: UIViewController {
             }
         }
     }
+
+    private var didLayoutSubviews = false
     
     // MARK: - Init
     public init(config: FMPhotoPickerConfig) {
@@ -58,11 +60,13 @@ public class FMPhotoPickerViewController: UIViewController {
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override public func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if self.dataSource == nil {
-            self.requestAndFetchAssets()
+
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if !didLayoutSubviews {
+            self.imageCollectionView.scrollToItem(at: IndexPath(item: self.dataSource.numberOfPhotos - 1, section: 0), at: .bottom, animated: false)
+            didLayoutSubviews = true
         }
     }
     
@@ -71,6 +75,7 @@ public class FMPhotoPickerViewController: UIViewController {
         view.backgroundColor = .white
         initializeViews()
         setupView()
+        requestAndFetchAssets()
     }
     
     // MARK: - Setup View
@@ -124,22 +129,19 @@ public class FMPhotoPickerViewController: UIViewController {
     }
     
     private func fetchPhotos() {
-        let photoAssets = Helper.getAssets(allowMediaTypes: self.config.mediaTypes)
+        let fetchResult = Helper.getFetchResult(allowMediaTypes: self.config.mediaTypes)
         var forceCropType: FMCroppable? = nil
-        if config.forceCropEnabled, let firstCrop = config.availableCrops?.first {
+        if self.config.forceCropEnabled,
+            let firstCrop = self.config.availableCrops?.first {
             forceCropType = firstCrop
         }
-        let fmPhotoAssets = photoAssets.map { FMPhotoAsset(asset: $0, forceCropType: forceCropType) }
-        self.dataSource = FMPhotosDataSource(photoAssets: fmPhotoAssets)
-        
+
+        self.dataSource = FMPhotosDataSource(fetchResult: fetchResult, forceCropType: forceCropType)
         if self.dataSource.numberOfPhotos > 0 {
             self.imageCollectionView.reloadData()
-            self.imageCollectionView.selectItem(at: IndexPath(row: self.dataSource.numberOfPhotos - 1, section: 0),
-                                                animated: false,
-                                                scrollPosition: .bottom)
         }
     }
-    
+
     public func updateControlBar() {
         if self.dataSource.numberOfSelectedPhoto() > 0 {
             self.doneButton.isHidden = false

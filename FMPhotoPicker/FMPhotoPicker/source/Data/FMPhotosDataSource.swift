@@ -10,11 +10,14 @@ import Foundation
 import Photos
 
 class FMPhotosDataSource {
-    public private(set) var photoAssets: [FMPhotoAsset]
+    private var fetchResult: PHFetchResult<PHAsset>
+    private var forceCropType: FMCroppable?
     private var selectedPhotoIndexes: [Int]
+    private var cachedFMAssets = [Int: FMPhotoAsset]()
     
-    init(photoAssets: [FMPhotoAsset]) {
-        self.photoAssets = photoAssets
+    init(fetchResult: PHFetchResult<PHAsset>, forceCropType: FMCroppable?) {
+        self.fetchResult = fetchResult
+        self.forceCropType = forceCropType
         self.selectedPhotoIndexes = []
     }
     
@@ -61,26 +64,28 @@ class FMPhotosDataSource {
     }
     
     public var numberOfPhotos: Int {
-        return self.photoAssets.count
+        return self.fetchResult.count
     }
     
     public func photo(atIndex index: Int) -> FMPhotoAsset? {
-        guard index < self.photoAssets.count, index >= 0 else { return nil }
-        return self.photoAssets[index]
+        guard index < self.fetchResult.count, index >= 0 else { return nil }
+        if let fmAsset = cachedFMAssets[index] {
+            return fmAsset
+        }
+        let phAsset = fetchResult.object(at: index)
+        let fmAsset = FMPhotoAsset(asset: phAsset, forceCropType: forceCropType)
+        cachedFMAssets[index] = fmAsset
+        return fmAsset
     }
     
     public func index(ofPhoto photo: FMPhotoAsset) -> Int? {
-        return self.photoAssets.firstIndex(where: { $0 === photo })
+        guard let asset = photo.asset else { return nil }
+        return fetchResult.index(of: asset)
     }
     
     public func contains(photo: FMPhotoAsset) -> Bool {
-        return self.index(ofPhoto: photo) != nil
-    }
-    
-    public func delete(photo: FMPhotoAsset) {
-        if let index = self.index(ofPhoto: photo) {
-            self.photoAssets.remove(at: index)
-        }
+        guard let asset = photo.asset else { return false }
+        return fetchResult.index(of: asset) != NSNotFound
     }
     
 }

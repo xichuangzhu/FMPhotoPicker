@@ -101,7 +101,7 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMI
         ]
         
         // all available filters will be used
-        config.availableFilters = []
+        config.availableFilters = nil
         
         return config
     }
