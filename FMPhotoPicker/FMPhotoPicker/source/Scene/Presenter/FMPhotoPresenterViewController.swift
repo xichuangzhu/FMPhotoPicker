@@ -436,10 +436,8 @@ private extension FMPhotoPresenterViewController {
         selectedContainer.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(selectedContainer)
         NSLayoutConstraint.activate([
-            selectedContainer.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 16),
-            selectedContainer.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8),
-            selectedContainer.widthAnchor.constraint(equalToConstant: 28),
-            selectedContainer.heightAnchor.constraint(equalToConstant: 28),
+            selectedContainer.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+            selectedContainer.rightAnchor.constraint(equalTo: view.rightAnchor),
         ])
         
         let selectedIcon = UIImageView()
@@ -448,10 +446,12 @@ private extension FMPhotoPresenterViewController {
         selectedIcon.translatesAutoresizingMaskIntoConstraints = false
         selectedContainer.addSubview(selectedIcon)
         NSLayoutConstraint.activate([
-            selectedIcon.topAnchor.constraint(equalTo: selectedContainer.topAnchor),
-            selectedIcon.rightAnchor.constraint(equalTo: selectedContainer.rightAnchor),
-            selectedIcon.bottomAnchor.constraint(equalTo: selectedContainer.bottomAnchor),
-            selectedIcon.leftAnchor.constraint(equalTo: selectedContainer.leftAnchor),
+            selectedIcon.topAnchor.constraint(equalTo: selectedContainer.topAnchor, constant: 16),
+            selectedIcon.leftAnchor.constraint(equalTo: selectedContainer.leftAnchor, constant: 8),
+            selectedIcon.bottomAnchor.constraint(equalTo: selectedContainer.bottomAnchor, constant: -16),
+            selectedIcon.rightAnchor.constraint(equalTo: selectedContainer.rightAnchor, constant: -8),
+            selectedIcon.widthAnchor.constraint(equalToConstant: 28),
+            selectedIcon.heightAnchor.constraint(equalToConstant: 28),
         ])
         
         let selectedButton = UIButton(type: .custom)
@@ -460,10 +460,10 @@ private extension FMPhotoPresenterViewController {
         selectedButton.translatesAutoresizingMaskIntoConstraints = false
         selectedContainer.addSubview(selectedButton)
         NSLayoutConstraint.activate([
-            selectedButton.topAnchor.constraint(equalTo: selectedContainer.topAnchor, constant: -10),
-            selectedButton.rightAnchor.constraint(equalTo: selectedContainer.rightAnchor, constant: -10),
-            selectedButton.bottomAnchor.constraint(equalTo: selectedContainer.bottomAnchor, constant: -10),
-            selectedButton.leftAnchor.constraint(equalTo: selectedContainer.leftAnchor, constant: -10),
+            selectedButton.topAnchor.constraint(equalTo: selectedContainer.topAnchor),
+            selectedButton.rightAnchor.constraint(equalTo: selectedContainer.rightAnchor),
+            selectedButton.bottomAnchor.constraint(equalTo: selectedContainer.bottomAnchor),
+            selectedButton.leftAnchor.constraint(equalTo: selectedContainer.leftAnchor),
         ])
         
         let selectedIndex = UILabel()
@@ -475,10 +475,10 @@ private extension FMPhotoPresenterViewController {
         selectedIndex.translatesAutoresizingMaskIntoConstraints = false
         selectedContainer.addSubview(selectedIndex)
         NSLayoutConstraint.activate([
-            selectedIndex.topAnchor.constraint(equalTo: selectedContainer.topAnchor),
-            selectedIndex.rightAnchor.constraint(equalTo: selectedContainer.rightAnchor),
-            selectedIndex.bottomAnchor.constraint(equalTo: selectedContainer.bottomAnchor),
-            selectedIndex.leftAnchor.constraint(equalTo: selectedContainer.leftAnchor),
+            selectedIndex.topAnchor.constraint(equalTo: selectedIcon.topAnchor),
+            selectedIndex.rightAnchor.constraint(equalTo: selectedIcon.rightAnchor),
+            selectedIndex.bottomAnchor.constraint(equalTo: selectedIcon.bottomAnchor),
+            selectedIndex.leftAnchor.constraint(equalTo: selectedIcon.leftAnchor),
         ])
         
         let bottomViewContainer = UIView()
