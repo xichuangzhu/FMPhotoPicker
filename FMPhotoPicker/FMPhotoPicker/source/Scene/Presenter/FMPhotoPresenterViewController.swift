@@ -191,7 +191,7 @@ class FMPhotoPresenterViewController: UIViewController {
             if self.config.selectMode == .multiple {
                 self.selectedIndex.isHidden = false
                 self.selectedIndex.text = "\(selectedIndex + 1)"
-                self.selectedIcon.image = UIImage(named: "check_on", in: .current, compatibleWith: nil)
+                self.selectedIcon.image = kCheckOnIcon
             } else {
                 self.selectedIndex.isHidden = true
                 self.selectedIcon.image = UIImage(named: "single_check_on", in: .current, compatibleWith: nil)

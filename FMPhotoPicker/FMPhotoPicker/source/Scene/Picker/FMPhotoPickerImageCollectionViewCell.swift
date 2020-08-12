@@ -193,7 +193,7 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
             if self.selectMode == .multiple {
                 self.selectedIndex.isHidden = false
                 self.selectedIndex.text = "\(selectedIndex + 1)"
-                self.selectButton.setImage(UIImage(named: "check_on", in: .current, compatibleWith: nil), for: .normal)
+                self.selectButton.setImage(kCheckOnIcon, for: .normal)
             } else {
                 self.selectedIndex.isHidden = true
                 self.selectButton.setImage(UIImage(named: "single_check_on", in: .current, compatibleWith: nil), for: .normal)
