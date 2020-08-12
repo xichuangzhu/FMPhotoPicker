@@ -16,6 +16,11 @@ public protocol FMPhotoPickerViewControllerDelegate: class {
 
 public class FMPhotoPickerViewController: UIViewController {
     // MARK: - Outlet
+    private lazy var loadingView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView()
+        view.hidesWhenStopped = true
+        return view
+    }()
     private weak var imageCollectionView: UICollectionView!
     private weak var numberOfSelectedPhotoContainer: UIView!
     private weak var numberOfSelectedPhoto: UILabel!
@@ -63,9 +68,10 @@ public class FMPhotoPickerViewController: UIViewController {
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        if !didLayoutSubviews {
-            self.imageCollectionView.scrollToItem(at: IndexPath(item: self.dataSource.numberOfPhotos - 1, section: 0), at: .bottom, animated: false)
+
+        if !didLayoutSubviews && self.imageCollectionView != nil && self.dataSource != nil {
+            let lastIndexPath = IndexPath(item: self.dataSource.numberOfPhotos - 1, section: 0)
+            imageCollectionView.scrollToItem(at: lastIndexPath, at: .bottom, animated: false)
             didLayoutSubviews = true
         }
     }
@@ -77,7 +83,7 @@ public class FMPhotoPickerViewController: UIViewController {
         setupView()
         requestAndFetchAssets()
     }
-    
+
     // MARK: - Setup View
     private func setupView() {
         self.imageCollectionView.register(FMPhotoPickerImageCollectionViewCell.self, forCellWithReuseIdentifier: FMPhotoPickerImageCollectionViewCell.reuseId)
@@ -124,21 +130,28 @@ public class FMPhotoPickerViewController: UIViewController {
                 cancelAction: cancelAction,
                 title: config.strings["permission_dialog_title"],
                 message: config.strings["permission_dialog_message"]
-                )
+            )
         }
     }
     
     private func fetchPhotos() {
-        let fetchResult = Helper.getFetchResult(allowMediaTypes: self.config.mediaTypes)
-        var forceCropType: FMCroppable? = nil
-        if self.config.forceCropEnabled,
-            let firstCrop = self.config.availableCrops?.first {
-            forceCropType = firstCrop
-        }
+        loadingView.startAnimating()
 
-        self.dataSource = FMPhotosDataSource(fetchResult: fetchResult, forceCropType: forceCropType)
-        if self.dataSource.numberOfPhotos > 0 {
-            self.imageCollectionView.reloadData()
+        DispatchQueue.global(qos: .userInitiated).async {
+            let fetchResult = Helper.getFetchResult(allowMediaTypes: self.config.mediaTypes)
+            var forceCropType: FMCroppable? = nil
+            if self.config.forceCropEnabled,
+                let firstCrop = self.config.availableCrops?.first {
+                forceCropType = firstCrop
+            }
+
+            DispatchQueue.main.async {
+                self.loadingView.stopAnimating()
+                self.dataSource = FMPhotosDataSource(fetchResult: fetchResult, forceCropType: forceCropType)
+                if self.dataSource.numberOfPhotos > 0 {
+                    self.imageCollectionView.reloadData()
+                }
+            }
         }
     }
 
@@ -457,6 +470,13 @@ private extension FMPhotoPickerViewController {
             imageCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
             imageCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             imageCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
+        ])
+
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(loadingView)
+        NSLayoutConstraint.activate([
+            loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
 }
