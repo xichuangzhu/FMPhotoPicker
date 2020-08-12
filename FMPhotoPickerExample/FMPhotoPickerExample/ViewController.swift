@@ -99,6 +99,7 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMI
             FMCrop.ratio9x16,
             FMCrop.ratioOrigin,
         ]
+        config.tintColor = UIColor.orange
         
         // all available filters will be used
         config.availableFilters = nil

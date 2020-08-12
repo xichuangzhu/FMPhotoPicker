@@ -6,7 +6,7 @@
 //  Copyright © 2018 Tribal Media House. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Photos
 
 public enum FMSelectMode {
@@ -50,7 +50,8 @@ public struct FMPhotoPickerConfig {
     public var availableFilters: [FMFilterable]? = kDefaultAvailableFilters
     public var availableCrops: [FMCroppable]? = kDefaultAvailableCrops
     public var alertController: FMAlertable = FMAlert()
-    
+    public var tintColor: UIColor = UIColor(red: 1, green: 81/255, blue: 81/255, alpha: 1)
+
     public var forceCropEnabled = false
     public var eclipsePreviewEnabled = false
     

@@ -58,6 +58,7 @@ public class FMPhotoPickerViewController: UIViewController {
     // MARK: - Init
     public init(config: FMPhotoPickerConfig) {
         self.config = config
+        kRedColor = config.tintColor
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
     }
