@@ -234,7 +234,9 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
     public func reloadAffectedCellByChangingSelection(changedIndex: Int) {
         let affectedList = self.dataSource.affectedSelectedIndexs(changedIndex: changedIndex)
         let indexPaths = affectedList.map { return IndexPath(row: $0, section: 0) }
-        self.imageCollectionView.reloadItems(at: indexPaths)
+        UIView.performWithoutAnimation {
+            self.imageCollectionView.reloadItems(at: indexPaths)
+        }
     }
     
     /**
@@ -270,7 +272,9 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
             
             if canBeAdded {
                 self.dataSource.setSeletedForPhoto(atIndex: index)
-                self.imageCollectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
+                UIView.performWithoutAnimation {
+                    self.imageCollectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
+                }
                 self.updateControlBar()
             }
         } else {  // single selection mode
@@ -283,7 +287,9 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
             
             self.dataSource.setSeletedForPhoto(atIndex: index)
             indexPaths.append(IndexPath(row: index, section: 0))
-            self.imageCollectionView.reloadItems(at: indexPaths)
+            UIView.performWithoutAnimation {
+                self.imageCollectionView.reloadItems(at: indexPaths)
+            }
             self.updateControlBar()
         }
     }
