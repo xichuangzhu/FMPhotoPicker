@@ -318,21 +318,11 @@ public class FMImageEditorViewController: UIViewController {
     }
     
     @IBAction func onTapCancel(_ sender: Any) {
-        let doCancelBlock = {
-            self.cropView.isCropping = false
-            
-            self.cropView.contentFrame = self.contentFrameFullScreen()
-            self.cropView.moveCropBoxToAspectFillContentFrame()
-            self.hideAnimatedMenu {
-                self.dismiss(animated: self.isAnimatedPresent, completion: nil)
-            }
-        }
-        
-        if fmPhotoAsset.getAppliedFilter().filterName() == selectedFilter.filterName() &&
-            cropView.getCropArea().isApproximatelyEqual(to: fmPhotoAsset.getAppliedCropArea()) {
-            doCancelBlock()
-        } else {
-            config.alertController.show(in: self, ok: doCancelBlock, cancel: {})
+        cropView.isCropping = false
+        cropView.contentFrame = self.contentFrameFullScreen()
+        cropView.moveCropBoxToAspectFillContentFrame()
+        hideAnimatedMenu {
+            self.dismiss(animated: self.isAnimatedPresent, completion: nil)
         }
     }
     @IBAction func onTapOpenFilter(_ sender: Any) {
