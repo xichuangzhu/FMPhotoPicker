@@ -319,7 +319,7 @@ public class FMImageEditorViewController: UIViewController {
     
     @IBAction func onTapCancel(_ sender: Any) {
         cropView.isCropping = false
-        hideAnimatedMenu(completion: nil)
+        hideAnimatedMenu(animated: false, completion: nil)
         dismiss(animated: false, completion: nil)
         cropView.contentFrame = contentFrameFullScreen()
         cropView.moveCropBoxToAspectFillContentFrame()

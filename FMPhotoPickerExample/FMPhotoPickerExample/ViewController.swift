@@ -102,7 +102,7 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMI
         config.tintColor = UIColor.orange
         
         // all available filters will be used
-        config.availableFilters = nil
+        config.availableFilters = []
         
         return config
     }
