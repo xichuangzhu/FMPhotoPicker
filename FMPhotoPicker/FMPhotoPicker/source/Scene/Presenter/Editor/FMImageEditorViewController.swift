@@ -319,15 +319,16 @@ public class FMImageEditorViewController: UIViewController {
     
     @IBAction func onTapCancel(_ sender: Any) {
         cropView.isCropping = false
-        cropView.contentFrame = self.contentFrameFullScreen()
+        hideAnimatedMenu(completion: nil)
+        dismiss(animated: false, completion: nil)
+        cropView.contentFrame = contentFrameFullScreen()
         cropView.moveCropBoxToAspectFillContentFrame()
-        hideAnimatedMenu {
-            self.dismiss(animated: self.isAnimatedPresent, completion: nil)
-        }
     }
+
     @IBAction func onTapOpenFilter(_ sender: Any) {
         openFiltersMenu()
     }
+
     @IBAction func onTapOpenCrop(_ sender: Any) {
         openCropsMenu()
     }
@@ -427,7 +428,16 @@ public class FMImageEditorViewController: UIViewController {
             completion: nil)
     }
     
-    private func hideAnimatedMenu(completion: (() -> Void)?) {
+    private func hideAnimatedMenu(animated: Bool = true, completion: (() -> Void)?) {
+        if !animated {
+            headerViewTopConstraint.constant = -headerView.frame.height
+            bottomViewContainerBottomConstraint.constant = bottomViewContainer.frame.height
+            self.headerView.alpha = 0
+            self.bottomViewContainer.alpha = 0
+            completion?()
+            return
+        }
+
         headerViewTopConstraint.constant = 0
         bottomViewContainerBottomConstraint.constant = 0
         
@@ -435,21 +445,19 @@ public class FMImageEditorViewController: UIViewController {
         
         headerViewTopConstraint.constant = -headerView.frame.height
         bottomViewContainerBottomConstraint.constant = bottomViewContainer.frame.height
-        
+
         UIView.animate(
             withDuration: kLeavingAnimationDuration,
             delay: 0,
             options: .curveEaseOut,
             animations: {
-                self.headerView.alpha = 0
-                self.bottomViewContainer.alpha = 0
-                self.view.layoutIfNeeded()
-        },
-            completion: { _ in
-                completion?()
+            self.headerView.alpha = 0
+            self.bottomViewContainer.alpha = 0
+            self.view.layoutIfNeeded()
+        }, completion: { _ in
+            completion?()
         })
     }
-    
     
     /// Returns a frame that will be used as the bound for the cropped image in the crop mode.
     private func contentFrameCrop() -> CGRect {
