@@ -438,7 +438,7 @@ private extension FMPhotoPickerViewController {
         
         let numberOfSelectedPhotoContainer = UIView()
         self.numberOfSelectedPhotoContainer = numberOfSelectedPhotoContainer
-        numberOfSelectedPhotoContainer.layer.cornerRadius = 14
+        numberOfSelectedPhotoContainer.layer.cornerRadius = 13
         numberOfSelectedPhotoContainer.layer.masksToBounds = true
         numberOfSelectedPhotoContainer.backgroundColor = kRedColor
         
@@ -447,8 +447,8 @@ private extension FMPhotoPickerViewController {
         NSLayoutConstraint.activate([
             numberOfSelectedPhotoContainer.rightAnchor.constraint(equalTo: doneButton.leftAnchor, constant: -16),
             numberOfSelectedPhotoContainer.centerYAnchor.constraint(equalTo: menuContainer.centerYAnchor),
-            numberOfSelectedPhotoContainer.heightAnchor.constraint(equalToConstant: 28),
-            numberOfSelectedPhotoContainer.widthAnchor.constraint(equalToConstant: 28),
+            numberOfSelectedPhotoContainer.heightAnchor.constraint(equalToConstant: 26),
+            numberOfSelectedPhotoContainer.widthAnchor.constraint(equalToConstant: 26),
         ])
         
         let numberOfSelectedPhoto = UILabel()

@@ -93,6 +93,7 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
         ])
         
         let cellFilterContainer = UIView()
+        cellFilterContainer.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         self.cellFilterContainer = cellFilterContainer
         
         contentView.addSubview(cellFilterContainer)
@@ -113,10 +114,9 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             selectButton.topAnchor.constraint(equalTo: contentView.topAnchor),
             selectButton.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-            selectButton.heightAnchor.constraint(equalToConstant: 40),
-            selectButton.widthAnchor.constraint(equalToConstant: 40)
+            selectButton.heightAnchor.constraint(equalToConstant: 44),
+            selectButton.widthAnchor.constraint(equalToConstant: 44)
         ])
-        
         
         let selectedIndex = UILabel()
         self.selectedIndex = selectedIndex
