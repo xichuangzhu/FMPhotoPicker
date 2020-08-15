@@ -288,19 +288,7 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
             
             self.dataSource.setSeletedForPhoto(atIndex: index)
             indexPaths.append(IndexPath(row: index, section: 0))
-            // 注释掉这里是为了解决一个 BUG
-            // FMPhotoPresenterViewController 在点了 done 后，
-            // 会先调用 didSelectPhotoHandler，然后会调用 self.tryToAddPhotoToSelectedList
-            // 然后会调用下面的 reloadItems，这个会触发 cell 的 prepareForReuse
-            // 会导致 PHPhotoAsset 的 canceledFullSizeRequest 被设置为 true
-            // 然后 FMPhotoPresenterViewController 会调用 didTapDone，
-            // 然后会调用 self.processDetermination
-            // 然后会触发 PHPhotoAsset 的 requestFullSizePhoto 调用
-            // 但是这个时候检测到 canceledFullSizeRequest == true
-            // 就会认为是取消状态，然后就会返回 nil，导致获得不到图片
-//             UIView.performWithoutAnimation {
-//                 self.imageCollectionView.reloadItems(at: indexPaths)
-//             }
+            self.imageCollectionView.reloadItems(at: indexPaths)
             self.updateControlBar()
         }
     }
