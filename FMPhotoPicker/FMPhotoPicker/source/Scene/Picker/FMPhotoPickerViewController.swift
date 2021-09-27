@@ -10,8 +10,11 @@ import UIKit
 import Photos
 
 // MARK: - Delegate protocol
-public protocol FMPhotoPickerViewControllerDelegate: class {
-    func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith photos: [UIImage])
+public protocol FMPhotoPickerViewControllerDelegate: AnyObject {
+    func fmPhotoPickerController(
+        _ picker: FMPhotoPickerViewController,
+        didFinishPickingPhotoWith photos: [UIImage]
+    )
 }
 
 public class FMPhotoPickerViewController: UIViewController {
@@ -53,7 +56,7 @@ public class FMPhotoPickerViewController: UIViewController {
         }
     }
 
-    private var didLayoutSubviews = false
+    private var didCallScrollToBottom = false
     
     // MARK: - Init
     public init(config: FMPhotoPickerConfig) {
@@ -69,12 +72,6 @@ public class FMPhotoPickerViewController: UIViewController {
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
-        if !didLayoutSubviews && self.imageCollectionView != nil && self.dataSource != nil {
-            let lastIndexPath = IndexPath(item: self.dataSource.numberOfPhotos - 1, section: 0)
-            imageCollectionView.scrollToItem(at: lastIndexPath, at: .bottom, animated: false)
-            didLayoutSubviews = true
-        }
     }
     
     public override func loadView() {
@@ -151,8 +148,17 @@ public class FMPhotoPickerViewController: UIViewController {
                 self.dataSource = FMPhotosDataSource(fetchResult: fetchResult, forceCropType: forceCropType)
                 if self.dataSource.numberOfPhotos > 0 {
                     self.imageCollectionView.reloadData()
+                    self.scrollToBottom()
                 }
             }
+        }
+    }
+
+    private func scrollToBottom() {
+        if !self.didCallScrollToBottom {
+            let lastIndexPath = IndexPath(item: self.dataSource.numberOfPhotos - 1, section: 0)
+            self.imageCollectionView.scrollToItem(at: lastIndexPath, at: .bottom, animated: false)
+            self.didCallScrollToBottom = true
         }
     }
 
