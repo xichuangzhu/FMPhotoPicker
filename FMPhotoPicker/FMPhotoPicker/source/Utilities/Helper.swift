@@ -109,13 +109,13 @@ class Helper: NSObject {
         
         let pId = manager.requestImageData(for: asset, options: options) { data, _, _, info in
             guard let data = data,
-                let image = UIImage(data: data)
-                else {
+                  let image = UIImage(data: data)
+            else {
                 return complete(nil)
             }
             complete(image)
         }
-//        manager.cancelImageRequest(pId)
+        //        manager.cancelImageRequest(pId)
         return pId
     }
     
@@ -133,10 +133,10 @@ class Helper: NSObject {
         let pId = manager.requestImage(for: photoAsset, targetSize: newSize, contentMode: .aspectFit, options: options, resultHandler: { result, _ in
             complete(result)
         })
-//        manager.cancelImageRequest(pId)
+        //        manager.cancelImageRequest(pId)
         return pId
     }
-
+    
     static func getFetchResult(allowMediaTypes: [FMMediaType]) -> PHFetchResult<PHAsset> {
         let fetchOptions = PHFetchOptions()
         fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
@@ -145,10 +145,10 @@ class Helper: NSObject {
         // fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
         
         fetchOptions.predicate = NSPredicate(format: "mediaType IN %@", allowMediaTypes.map( { $0.value() }))
-
+        
         return PHAsset.fetchAssets(with: fetchOptions)
     }
-
+    
     static func canAccessPhotoLib() -> Bool {
         return PHPhotoLibrary.authorizationStatus() == .authorized
     }
